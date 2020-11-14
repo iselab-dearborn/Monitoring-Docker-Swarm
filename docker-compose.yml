@@ -11,6 +11,8 @@ volumes:
     alertmanager: {}
 
 configs:
+  dockerd_config:
+    file: ./dockerd-exporter/Caddyfile
   node_rules:
     file: ./prometheus/rules/swarm_node.rules.yml
   task_rules:
