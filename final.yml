@@ -1,0 +1,50 @@
+services:
+  cbeapp:
+    depends_on: [cbedb, cbemq]
+    deploy:
+      placement:
+        constraints: [node.hostname == Worker2]
+    environment: [DBENGINE=postgresql, DBHOST=cbedb, DBNAME=cbe, DBPASSWORD=super,
+      DBUSER=super, MQHOST=cbemq, MQUSER=super, MQPASSWORD=super, MQRESTSERVER=cbe.sphinx.co.nz,
+      MQRESTPORT=443, MQRESTPROTOCOL=https, SUNAME=super, SUEMAIL=super@super.com,
+      SUPASS=super]
+    image: semprini/cbe-utilities
+    ports: ['8000:8000']
+    restart: unless-stopped
+  cbedb:
+    deploy:
+      placement:
+        constraints: [node.hostname == Worker1]
+    environment: {POSTGRES_DB: cbe, POSTGRES_PASSWORD: super, POSTGRES_USER: super}
+    image: postgres:latest
+    restart: unless-stopped
+    volumes: ['db-data:/var/lib/postgresql/data']
+  cbedbadmin:
+    deploy:
+      placement:
+        constraints: [node.hostname == Worker2]
+    environment: {PGADMIN_DEFAULT_EMAIL: super@super.com, PGADMIN_DEFAULT_PASSWORD: super}
+    image: dpage/pgadmin4
+    links: [cbedb]
+    ports: [80]
+    restart: unless-stopped
+  cbemq:
+    deploy:
+      placement:
+        constraints: [node.hostname ==  Worker1]
+    environment: {RABBITMQ_DEFAULT_PASS: super, RABBITMQ_DEFAULT_USER: super, TCP_PORTS: '5672,5671'}
+    image: rabbitmq:3-management-alpine
+    ports: ['8080:15672', 5671, 5672]
+    restart: unless-stopped
+  haproxy:
+    deploy:
+      placement:
+        constraints: [node.hostname ==  Worker1]
+    environment: {MODE: tcp}
+    expose: [5671, 5672, 8000, 9000]
+    image: dockercloud/haproxy:latest
+    links: [cbemq, cbeapp, cbedbadmin]
+    restart: unless-stopped
+    volumes: ['/var/run/docker.sock:/var/run/docker.sock']
+version: '3.2'
+volumes: {db-data: null}
