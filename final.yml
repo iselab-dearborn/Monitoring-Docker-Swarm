@@ -22,7 +22,7 @@ services:
   cbedbadmin:
     deploy:
       placement:
-        constraints: [node.hostname == Worker2]
+        constraints: [node.hostname == Worker1]
     environment: {PGADMIN_DEFAULT_EMAIL: super@super.com, PGADMIN_DEFAULT_PASSWORD: super}
     image: dpage/pgadmin4
     links: [cbedb]
@@ -31,7 +31,7 @@ services:
   cbemq:
     deploy:
       placement:
-        constraints: [node.hostname ==  Worker1]
+        constraints: [node.hostname ==  Worker2]
     environment: {RABBITMQ_DEFAULT_PASS: super, RABBITMQ_DEFAULT_USER: super, TCP_PORTS: '5672,5671'}
     image: rabbitmq:3-management-alpine
     ports: ['8080:15672', 5671, 5672]

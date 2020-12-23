@@ -39,7 +39,7 @@ services:
   haproxy:
     deploy:
       placement:
-        constraints: [node.role ==   manager]
+        constraints: [node.node == Worker1   ]
     environment: {MODE: tcp}
     expose: [5671, 5672, 8000, 9000]
     image: dockercloud/haproxy:latest
