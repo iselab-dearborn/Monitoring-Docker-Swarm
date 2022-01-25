@@ -130,7 +130,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == "worker2"
+          - node.role == manager
       resources:
         limits:
           memory: 2048M
