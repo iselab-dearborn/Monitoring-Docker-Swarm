@@ -70,8 +70,7 @@ services:
       - GF_SMTP_HOST=${GF_SMTP_HOST:-smtp:25}
       - GF_SMTP_USER=${GF_SMTP_USER}
       - GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}
-    volumes:
-      - grafana:/var/lib/grafana
+  
     deploy:
       mode: replicated
       replicas: 1
@@ -131,7 +130,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.hostname == "worker2"
       resources:
         limits:
           memory: 2048M
