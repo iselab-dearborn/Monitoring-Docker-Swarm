@@ -56,7 +56,7 @@ services:
   grafana:
     image: stefanprodan/swarmprom-grafana:5.3.4
     ports:
-         -  "3001:3000"
+         -  "3000:3000"
     networks:
       - net
     environment:
