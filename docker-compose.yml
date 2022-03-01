@@ -35,7 +35,7 @@ services:
        #   memory: 64M
 
   cadvisor:
-    image: google/cadvisor
+    image: unibaktr/cadvisor
     networks:
       - net
     command: -logtostderr -docker_only
@@ -54,7 +54,7 @@ services:
           memory: 64M
 
   grafana:
-    image: stefanprodan/swarmprom-grafana:5.3.4
+    image: proxx/grafana-armv7
     ports:
          -  "3000:3000"
     networks:
@@ -84,7 +84,7 @@ services:
           memory: 64M
 
   node-exporter:
-    image: stefanprodan/swarmprom-node-exporter:v0.16.0
+    image: jmb12686/node-exporter
     networks:
       - net
     environment:
@@ -109,7 +109,7 @@ services:
           memory: 64M
 
   prometheus:
-    image: stefanprodan/swarmprom-prometheus:v2.5.0
+    image: anwargh/prometheus:arch32
     ports:
          -  "9090:9090"
     networks:
